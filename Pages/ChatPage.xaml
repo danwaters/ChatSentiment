@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="Sentiment.ChatPage"
+    xmlns:local="clr-namespace:Sentiment"
+    x:TypeArguments="local:ChatViewModel">
+	<local:BaseContentPage.RootContent>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="300"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Frame Margin="20" Grid.Row="0" BackgroundColor="Gray">
+                <Label Text="{Binding AverageSentiment}" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </Frame>
+
+            <ListView
+                Grid.Row="1"
+                x:Name="chatList"
+                VerticalOptions="FillAndExpand"
+                IsPullToRefreshEnabled="false"
+                BackgroundColor="Transparent"
+                SeparatorVisibility="None"
+                ItemsSource="{Binding Messages}"
+                Margin="20,0,0,20"
+                >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Label Text="{Binding MessageText}"/>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+            </ListView>
+            
+        </Grid>
+    </local:BaseContentPage.RootContent>
+</local:BaseContentPage>
