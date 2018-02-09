@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Sentiment.Services;
 using Xamarin.Forms;
 
 namespace Sentiment
@@ -44,32 +45,20 @@ namespace Sentiment
             {
                 new ChatMessageViewModel
                 {
-                    SenderName = "Dan Waters",
-                    MessageText = "The quality of mercy is not strained.",
+                    SenderName = "Chat Sentiment",
+                    MessageText = "Welcome!",
                     Sentiment = 0.5f
                 },
-
-                new ChatMessageViewModel
-                {
-                    SenderName = "Cersei Lannister",
-                    MessageText = "This is repugnant to the entire realm.",
-                    Sentiment = 0.1f
-                },
-
-                new ChatMessageViewModel
-                {
-                    SenderName = "Ned Stark",
-                    MessageText = "I tend to agree.",
-                    Sentiment = 0.9f
-                }
             };
         }
 
-        private void HandleChatItemAdded()
+        private async void HandleChatItemAdded()
         {
-            Messages.Add(new ChatMessageViewModel() {MessageText = ChatMessage, Sentiment = 0.5f});
+            var analytics = new AzureTextAnalyzer();
+            var result = await analytics.AnalyzeSentiment(ChatMessage);
+            var sentiment = result.HasValue ? result.Value : 0.0f;
+            Messages.Insert(0, new ChatMessageViewModel() {MessageText = ChatMessage, Sentiment = sentiment});
             ChatMessage = "";
-
         }
     }
 }
