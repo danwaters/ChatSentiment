@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Sentiment.Services;
@@ -24,14 +25,19 @@ namespace Sentiment
             set { SetPropertyChanged(ref chatMessage, value);}
         }
 
-        public string AverageSentiment
+        public double AverageSentiment
         {
-            get { return GetAverageSentiment().ToString(); }
+            get { if (!messages.Any()) return 0.0f; else return GetAverageSentiment(); }
+        }
+
+        public string AverageSentimentString
+        {
+            get { return Math.Round(AverageSentiment, 0).ToString() + "%"; }
         }
 
         private double GetAverageSentiment()
         {
-            return messages.Average(m => m.Sentiment);
+            return messages.Average(m => m.Sentiment) * 100;
         }
 
         public ICommand SendChatCommand
@@ -43,12 +49,7 @@ namespace Sentiment
         {
             Messages = new ObservableCollection<ChatMessageViewModel>
             {
-                new ChatMessageViewModel
-                {
-                    SenderName = "Chat Sentiment",
-                    MessageText = "Welcome!",
-                    Sentiment = 0.5f
-                },
+
             };
         }
 
@@ -58,7 +59,15 @@ namespace Sentiment
             var result = await analytics.AnalyzeSentiment(ChatMessage);
             var sentiment = result.HasValue ? result.Value : 0.0f;
             Messages.Insert(0, new ChatMessageViewModel() {MessageText = ChatMessage, Sentiment = sentiment});
+            NotifyPropertiesChanged();
             ChatMessage = "";
+        }
+
+        public override void NotifyPropertiesChanged()
+        {
+            base.NotifyPropertiesChanged();
+            SetPropertyChanged(nameof(AverageSentiment));
+            SetPropertyChanged(nameof(AverageSentimentString));
         }
     }
 }

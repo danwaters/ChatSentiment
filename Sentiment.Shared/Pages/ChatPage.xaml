@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
     x:Class="Sentiment.ChatPage"
     xmlns:local="clr-namespace:Sentiment"
+    xmlns:controls="clr-namespace:Sentiment.Shared.Controls"
     x:TypeArguments="local:ChatViewModel">
 	<local:BaseContentPage.RootContent>
         <Grid RowSpacing="0">
@@ -14,8 +15,12 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Frame Margin="20" Grid.Row="0" BackgroundColor="Gray">
-                <Label Text="{Binding AverageSentiment}" HorizontalOptions="Center" VerticalOptions="Center"/>
+            <Frame Margin="20" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="0" BackgroundColor="Black">
+                <StackLayout Orientation="Vertical" HorizontalOptions="Center" WidthRequest="150">
+                    <Label Text="Average Sentiment"/>
+                    <controls:CircleProgress WidthRequest="150" HeightRequest="150" PercentageComplete="{Binding AverageSentiment}"/>
+                    <Label HorizontalOptions="Center" Text="{Binding AverageSentimentString}"/>
+                </StackLayout>
             </Frame>
 
             <ListView
