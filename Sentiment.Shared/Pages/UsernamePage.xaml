@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<local:BaseContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="Sentiment.UsernamePage"
+    xmlns:local="clr-namespace:Sentiment"
+    xmlns:controls="clr-namespace:Sentiment.Shared.Controls"
+    x:TypeArguments="local:UserViewModel">
+	<local:BaseContentPage.Content>
+        <ScrollView HorizontalOptions="Fill">
+        <Grid HorizontalOptions="Fill" VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="Enter your username:" HorizontalOptions="Center" Grid.Row="0"/>
+            <StackLayout Grid.Row="1" Orientation="Horizontal">
+                <Entry HorizontalOptions="StartAndExpand" Placeholder="Your Name" Text="{Binding Username}"/>
+                <Button WidthRequest="150" HorizontalOptions="End" Clicked="Handle_EnterChatClicked" Text="Enter Chat"/>
+            </StackLayout>
+        </Grid>
+        </ScrollView>
+    </local:BaseContentPage.Content>
+</local:BaseContentPage>
