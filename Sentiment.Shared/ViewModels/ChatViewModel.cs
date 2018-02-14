@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Sentiment.Services;
+using Sentiment.Shared.Services;
 using Xamarin.Forms;
 
 namespace Sentiment
@@ -45,11 +46,20 @@ namespace Sentiment
             get { return new Command(HandleChatItemAdded); }
         }
 
+        private readonly SignalRClient signalR;
+
         public ChatViewModel()
         {
             Messages = new ObservableCollection<ChatMessageViewModel>
             {
 
+            };
+
+            signalR = new SignalRClient();
+            signalR.ChatMessageReceived += (object sender, ChatEventArgs e) => 
+            {
+                Messages.Insert(0, new ChatMessageViewModel() { SenderName = e.Username, MessageText = e.Message, Sentiment = e.Sentiment });
+                NotifyPropertiesChanged();
             };
         }
 
@@ -58,8 +68,7 @@ namespace Sentiment
             var analytics = new AzureTextAnalyzer();
             var result = await analytics.AnalyzeSentiment(ChatMessage);
             var sentiment = result.HasValue ? result.Value : 0.0f;
-            Messages.Insert(0, new ChatMessageViewModel() {MessageText = ChatMessage, Sentiment = sentiment});
-            NotifyPropertiesChanged();
+            await signalR.SendChatMessage("CLOUD", ChatMessage, sentiment);
             ChatMessage = "";
         }
 
