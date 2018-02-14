@@ -50,7 +50,7 @@ namespace Sentiment
         protected override void OnStart()
         {
             base.OnStart();
-            MainPage = new ChatPage().ToNav();
+            MainPage = new UsernamePage().ToNav();
         }
 
         protected override void OnSleep()

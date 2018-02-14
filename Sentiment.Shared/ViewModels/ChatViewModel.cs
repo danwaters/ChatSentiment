@@ -26,6 +26,13 @@ namespace Sentiment
             set { SetPropertyChanged(ref chatMessage, value);}
         }
 
+        private string userName = "";
+        public string Username
+        {
+            get { return userName; }
+            set { SetPropertyChanged(ref userName, value); }
+        }
+
         public double AverageSentiment
         {
             get { if (!messages.Any()) return 0.0f; else return GetAverageSentiment(); }
@@ -58,7 +65,7 @@ namespace Sentiment
             signalR = new SignalRClient();
             signalR.ChatMessageReceived += (object sender, ChatEventArgs e) => 
             {
-                Messages.Insert(0, new ChatMessageViewModel() { SenderName = e.Username, MessageText = e.Message, Sentiment = e.Sentiment });
+                Messages.Insert(0, new ChatMessageViewModel() { SenderName = e.Username, MessageText = $"{e.Username}: {e.Message}", Sentiment = e.Sentiment });
                 NotifyPropertiesChanged();
             };
         }
@@ -68,7 +75,7 @@ namespace Sentiment
             var analytics = new AzureTextAnalyzer();
             var result = await analytics.AnalyzeSentiment(ChatMessage);
             var sentiment = result.HasValue ? result.Value : 0.0f;
-            await signalR.SendChatMessage("CLOUD", ChatMessage, sentiment);
+            await signalR.SendChatMessage(Username, ChatMessage, sentiment);
             ChatMessage = "";
         }
 

@@ -10,5 +10,11 @@ namespace Sentiment
         {
             InitializeComponent();
         }
+
+        public ChatPage(string username)
+        {
+            ViewModel.Username = username;
+            InitializeComponent();
+        }
     }
 }
