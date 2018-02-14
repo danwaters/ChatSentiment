@@ -11,6 +11,8 @@
     <PackageReference Include="SkiaSharp.Svg" Version="1.59.1" />
     <PackageReference Include="Ansuria.XFGloss" Version="1.0.6.59" />
     <PackageReference Include="Microsoft.Azure.CognitiveServices.Language" Version="1.0.0-preview" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.0-alpha2-final" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.0.0-alpha2-final" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\" />
