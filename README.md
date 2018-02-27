@@ -16,4 +16,4 @@ The UI and its substructure (BaseContentPage, BaseViewModel) is based on Hunt by
 
 ## Future Improvements
 Plan to use Azure Functions to trigger text analytics + enable persistence of chat sessions across clients using Cosmos DB
-
+![sentiment2](https://user-images.githubusercontent.com/780735/36743921-1732c0f8-1bb1-11e8-8966-15c09ac7b455.png)
